@@ -10,6 +10,7 @@ import (
 
 func main() {
 	sum := 0
+	min := 0
 	red := 12
 	green := 13
 	blue := 14
@@ -23,6 +24,9 @@ func main() {
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
 		isOK := true
+		maxRed := 0
+		maxBlue := 0
+		maxGreen := 0
 		line := scanner.Text()
 		split := strings.Split(line, ":")
 		gameID := strings.Split(split[0], " ")
@@ -34,16 +38,25 @@ func main() {
 				switch value[2] {
 				case "red":
 					v, _ := strconv.Atoi(value[1])
+					if v > maxRed {
+						maxRed = v
+					}
 					if v > red {
 						isOK = false
 					}
 				case "blue":
 					v, _ := strconv.Atoi(value[1])
+					if v > maxBlue {
+						maxBlue = v
+					}
 					if v > blue {
 						isOK = false
 					}
 				case "green":
 					v, _ := strconv.Atoi(value[1])
+					if v > maxGreen {
+						maxGreen = v
+					}
 					if v > green {
 						isOK = false
 					}
@@ -52,10 +65,14 @@ func main() {
 
 		}
 
+		power := maxGreen * maxBlue * maxRed
+		min += power
+
 		if isOK {
 			v, _ := strconv.Atoi(gameID[1])
 			sum += v
 		}
 	}
 	fmt.Printf("Sum = %d\n", sum)
+	fmt.Printf("Min = %d\n", min)
 }
